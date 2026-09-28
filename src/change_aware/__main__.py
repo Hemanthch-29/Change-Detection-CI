@@ -1,3 +1,5 @@
+import sys
+
 from change_aware.cli import main
 
-main()
+sys.exit(main())

@@ -30,7 +30,7 @@ def test_models_can_be_instantiated() -> None:
 
 
 def test_cli_main_prints_name(capsys) -> None:
-    main()
+    assert main([]) == 0
     assert "Change-Aware Testing Agent" in capsys.readouterr().out
 
 

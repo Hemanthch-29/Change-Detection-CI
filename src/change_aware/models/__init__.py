@@ -1,5 +1,6 @@
 from change_aware.models.models import (
     ChangedFile,
+    ChangeType,
     DependencyEdge,
     DependencyNode,
     ImpactedComponent,
@@ -9,6 +10,7 @@ from change_aware.models.models import (
 
 __all__ = [
     "ChangedFile",
+    "ChangeType",
     "DependencyEdge",
     "DependencyNode",
     "ImpactedComponent",
