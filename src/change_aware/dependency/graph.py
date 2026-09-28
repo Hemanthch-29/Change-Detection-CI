@@ -52,22 +52,26 @@ class DependencyGraph:
 
     def traverse_dependencies(self, node: str) -> list[str]:
         """All nodes reachable from ``node`` (excluding itself), in BFS order."""
-        return self._traverse(node, self._dependencies)
+        return [n for n, _ in self._traverse(node, self._dependencies)]
 
     def traverse_dependents(self, node: str) -> list[str]:
         """All nodes that transitively depend on ``node`` (excluding itself), in BFS order."""
+        return [n for n, _ in self._traverse(node, self._dependents)]
+
+    def traverse_dependents_with_depth(self, node: str) -> list[tuple[str, int]]:
+        """Like ``traverse_dependents`` but paired with the shortest hop count from ``node``."""
         return self._traverse(node, self._dependents)
 
     @staticmethod
-    def _traverse(start: str, adjacency: dict[str, set[str]]) -> list[str]:
+    def _traverse(start: str, adjacency: dict[str, set[str]]) -> list[tuple[str, int]]:
         visited = {start}
-        order: list[str] = []
-        queue = deque([start])
+        order: list[tuple[str, int]] = []
+        queue = deque([(start, 0)])
         while queue:
-            current = queue.popleft()
+            current, depth = queue.popleft()
             for neighbor in sorted(adjacency.get(current, ())):
                 if neighbor not in visited:
                     visited.add(neighbor)
-                    order.append(neighbor)
-                    queue.append(neighbor)
+                    order.append((neighbor, depth + 1))
+                    queue.append((neighbor, depth + 1))
         return order

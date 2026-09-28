@@ -23,7 +23,7 @@ def test_models_can_be_instantiated() -> None:
     assert ChangedFile(path="a.py").path == "a.py"
     assert DependencyNode(id="a").id == "a"
     assert DependencyEdge(source="a", target="b").target == "b"
-    assert ImpactedComponent(id="a").id == "a"
+    assert ImpactedComponent(path="a").path == "a"
     candidate = TestCandidate(path="tests/test_a.py")
     assert TestSelectionResult(selected_tests=[candidate]).selected_tests == [candidate]
     assert TestSelectionResult().selected_tests == []

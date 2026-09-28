@@ -32,7 +32,7 @@ class DependencyGraphBuilder:
 
         graph = DependencyGraph()
         scanned = skipped = 0
-        for file_path in _iter_files(repo):
+        for file_path in iter_repository_files(repo):
             analyzer = next((a for a in self.analyzers if a.supports(file_path)), None)
             if analyzer is None:
                 skipped += 1
@@ -47,7 +47,8 @@ class DependencyGraphBuilder:
         return graph
 
 
-def _iter_files(repo: Path) -> list[Path]:
+def iter_repository_files(repo: Path) -> list[Path]:
+    """All files under ``repo`` in sorted order, skipping ``IGNORED_DIRECTORIES``."""
     files: list[Path] = []
     for dirpath, dirnames, filenames in os.walk(repo):
         pruned = [d for d in dirnames if d in IGNORED_DIRECTORIES]
