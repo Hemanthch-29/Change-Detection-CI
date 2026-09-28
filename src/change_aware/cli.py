@@ -107,14 +107,20 @@ def _select_tests(repository: str, base: str, head: str, output_format: str) -> 
         return 1
 
     if output_format == "json":
-        print(json.dumps(_selection_to_dict(impact, selection), indent=2))
+        print(json.dumps(_selection_to_dict(changes, impact, selection), indent=2))
     else:
         _print_selection(impact, selection)
     return 0
 
 
-def _selection_to_dict(impact: ImpactAnalysisResult, selection: TestSelectionResult) -> dict:
+def _selection_to_dict(
+    changes: list[ChangedFile], impact: ImpactAnalysisResult, selection: TestSelectionResult
+) -> dict:
     return {
+        "changed_files": [
+            {"path": c.path, "change_type": c.change_type.value, "old_path": c.old_path}
+            for c in changes
+        ],
         "changed_components": impact.changed_components,
         "impacted_components": [
             {

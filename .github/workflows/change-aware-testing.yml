@@ -34,4 +34,13 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: python .github/scripts/run_change_aware_tests.py --repo . --base "$BASE_SHA" --head "$HEAD_SHA"
+        run: >-
+          python .github/scripts/run_change_aware_tests.py
+          --repo . --base "$BASE_SHA" --head "$HEAD_SHA"
+          --report-dir "$RUNNER_TEMP/change-aware"
+
+      - name: Publish change-aware summary
+        # Runs even when tests fail; never affects the job result.
+        if: always()
+        continue-on-error: true
+        run: python .github/scripts/generate_change_aware_summary.py --report-dir "$RUNNER_TEMP/change-aware"
