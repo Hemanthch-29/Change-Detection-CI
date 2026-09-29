@@ -127,3 +127,5 @@ def _run_git(args: list[str], cwd: Path) -> str:
             returncode=completed.returncode,
         )
     return completed.stdout
+
+# Demo: controlled change to exercise change-aware test selection on a real PR.
